@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login / Register</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: linear-gradient(to right, #141e30, #243b55);
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .container {
+            background: #1f1f1f;
+            width: 350px;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 15px;
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 6px;
+        }
+
+        button {
+            width: 95%;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:nth-of-type(1) {
+            background: #444;   /* show password */
+            color: white;
+        }
+
+        button:nth-of-type(2) {
+            background: #00c853;  /* login */
+            color: white;
+        }
+
+        button:hover {
+            background: #00a844;
+        }
+
+        .toggle {
+            margin-top: 15px;
+            cursor: pointer;
+            color: #00c853;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .error {
+            color: #ff5252;
+            font-size: 12px;
+            margin: 2px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- LOGIN BOX -->
+    <div id="loginBox">
+        <h2>Login</h2>
+
+        <input id="login_user" placeholder="Username">
+        <p class="error" id="login_user_error"></p>
+
+        <input id="login_pass" type="password" placeholder="Password">
+        <p class="error" id="login_pass_error"></p>
+
+        <button onclick="togglePassword('login_pass')">
+            Show / Hide Password
+        </button>
+
+        <button onclick="login()">Login</button>
+
+        <p class="toggle" onclick="showRegister()">
+            Don't have an account? Register
+        </p>
+    </div>
+
+    <!-- REGISTER BOX -->
+    <div id="registerBox" class="hidden">
+        <h2>Register</h2>
+
+        <input id="reg_user" placeholder="Username">
+        <p class="error" id="reg_user_error"></p>
+
+        <input id="reg_pass" type="password" placeholder="Password">
+        <p class="error" id="reg_pass_error"></p>
+
+        <button onclick="togglePassword('reg_pass')">
+            Show / Hide Password
+        </button>
+
+        <button onclick="register()">Register</button>
+
+        <p class="toggle" onclick="showLogin()">
+            Already have an account? Login
+        </p>
+    </div>
+
+</div>
+
+<script>
+const BASE_URL = "http://127.0.0.1:8000";
+
+// 🔥 SWITCH BETWEEN LOGIN & REGISTER
+function showRegister() {
+    document.getElementById("loginBox").classList.add("hidden");
+    document.getElementById("registerBox").classList.remove("hidden");
+}
+
+function showLogin() {
+    document.getElementById("registerBox").classList.add("hidden");
+    document.getElementById("loginBox").classList.remove("hidden");
+}
+
+// SHOW / HIDE PASSWORD
+function togglePassword(id) {
+    let input = document.getElementById(id);
+    input.type = input.type === "password" ? "text" : "password";
+}
+
+// VALIDATION FUNCTION
+function validate(username, password, userErr, passErr) {
+    let valid = true;
+
+    document.getElementById(userErr).innerText = "";
+    document.getElementById(passErr).innerText = "";
+
+    if (!username) {
+        document.getElementById(userErr).innerText = "Username required";
+        valid = false;
+    }
+
+    if (!password) {
+        document.getElementById(passErr).innerText = "Password required";
+        valid = false;
+    } 
+    else if (password.length < 4) {
+        document.getElementById(passErr).innerText = "Password must be at least 6 characters";
+        valid = false;
+    }
+
+    return valid;
+}
+
+// REGISTER
+function register() {
+    let username = document.getElementById("reg_user").value;
+    let password = document.getElementById("reg_pass").value;
+
+    if (!validate(username, password, "reg_user_error", "reg_pass_error")) return;
+
+    fetch(BASE_URL + "/register", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({username, password})
+    })
+    .then(res => res.json())
+    .then(() => {
+        alert("Registered successfully!");
+        showLogin(); // 🔥 go back to login
+    });
+}
+
+// LOGIN
+function login() {
+    let username = document.getElementById("login_user").value;
+    let password = document.getElementById("login_pass").value;
+
+    if (!validate(username, password, "login_user_error", "login_pass_error")) return;
+
+    fetch(BASE_URL + "/login", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({username, password})
+    })
+    .then(res => {
+        if (!res.ok) throw new Error("Invalid credentials");
+        return res.json();
+    })
+    .then(data => {
+        localStorage.setItem("user", data.username);
+        window.location.href = "dashboard.html";
+    })
+    .catch(() => {
+        document.getElementById("login_pass_error").innerText = "Invalid username or password";
+    });
+}
+</script>
+
+</body>
+</html>
