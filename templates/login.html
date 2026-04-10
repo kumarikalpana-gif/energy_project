@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login / Register</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- LOGIN BOX -->
+    <div id="loginBox">
+        <h2>Login</h2>
+
+        <input id="login_user" placeholder="Username">
+        <p class="error" id="login_user_error"></p>
+
+        <input id="login_pass" type="password" placeholder="Password">
+        <p class="error" id="login_pass_error"></p>
+
+        <button onclick="togglePassword('login_pass')">
+            Show / Hide Password
+        </button>
+
+        <button onclick="login()">Login</button>
+
+        <p class="toggle" onclick="showRegister()">
+            Don't have an account? Register
+        </p>
+    </div>
+
+    <!-- REGISTER BOX -->
+    <div id="registerBox" class="hidden">
+        <h2>Register</h2>
+
+        <input id="reg_user" placeholder="Username">
+        <p class="error" id="reg_user_error"></p>
+
+        <input id="reg_pass" type="password" placeholder="Password">
+        <p class="error" id="reg_pass_error"></p>
+
+        <button onclick="togglePassword('reg_pass')">
+            Show / Hide Password
+        </button>
+
+        <button onclick="register()">Register</button>
+
+        <p class="toggle" onclick="showLogin()">
+            Already have an account? Login
+        </p>
+    </div>
+
+</div>
+
+<script src="/static/script.js"></script>
+
+</body>
+</html>

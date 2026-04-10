@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Energy Dashboard</title>
+
+        <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body id="dashboard">
+
+<h1> Energy Dashboard</h1>
+
+<div style="display:flex; justify-content:space-between; padding:15px; background:#1f1f1f;">
+    <h2>⚡ Energy Dashboard</h2>
+    <div>
+        <span id="welcomeUser"></span>
+        <button onclick="logout()">Logout</button>
+    </div>
+</div>
+
+<!-- SUMMARY CARDS -->
+<div class="flex">
+    <div class="card">
+        <h3>Daily Energy</h3>
+        <p id="dailyEnergy">0</p>
+    </div>
+
+    <div class="card">
+        <h3>Monthly Bill</h3>
+        <p id="bill">0</p>
+    </div>
+</div>
+
+<hr>
+
+<h2>Add Appliance</h2>
+<input id="a_name" placeholder="Name (AC, Fan)">
+<input id="a_power" placeholder="Power (W)">
+<input id="a_hours" placeholder="Hours/Day">
+<button onclick="addAppliance()">Add</button>
+
+<hr>
+
+<div class="flex">
+    <div class="card canvas-container">
+        <h3>Energy by Appliance</h3>
+        <canvas id="barChart"></canvas>
+    </div>
+
+    <div class="card canvas-container">
+        <h3>Energy Distribution</h3>
+        <canvas id="pieChart"></canvas>
+    </div>
+</div>
+
+<hr>
+
+<!-- RECOMMENDATIONS -->
+<h2>Recommendations</h2>
+<p id="tips"></p>
+
+<!-- Chart.js (used for visualization) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="/static/script.js"></script>
+
+</body>
+</html>

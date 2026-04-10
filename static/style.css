@@ -1,0 +1,175 @@
+
+/*LOGIN PAGE STYLES*/
+
+body {
+    font-family: Arial;
+    background: linear-gradient(to right, #141e30, #243b55);
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.container {
+    background: #1f1f1f;
+    width: 350px;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    text-align: center;
+}
+
+h2 {
+    margin-bottom: 15px;
+}
+
+input {
+    width: 90%;
+    padding: 10px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 6px;
+}
+
+button {
+    width: 95%;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:nth-of-type(1) {
+    background: #444;   /* show password */
+    color: white;
+}
+
+button:nth-of-type(2) {
+    background: #00c853;  /* login */
+    color: white;
+}
+
+button:hover {
+    background: #00a844;
+}
+
+.toggle {
+    margin-top: 15px;
+    cursor: pointer;
+    color: #00c853;
+}
+
+.hidden {
+    display: none;
+}
+
+.error {
+    color: #ff5252;
+    font-size: 12px;
+    margin: 2px;
+}
+
+
+/*DASHBOARD PAGE STYLES*/
+
+body {
+font-family: Arial;
+background: linear-gradient(to right, #141e30, #243b55);
+margin: 0;
+color: white;
+}
+
+h1 {
+text-align: center;
+}
+
+h1, h2, h3 {
+color: #ffffff;
+}
+
+h2 {
+color: #ffffff;
+margin-top: 20px;
+}
+
+.section {
+margin: 20px 0;
+}
+
+.card {
+background: #1f1f1f;
+padding: 20px;
+border-radius: 10px;
+width: 350px;   /* important */
+text-align: center;
+}
+
+.card h3 {
+margin-bottom: 10px;
+color: #00c853;
+}
+.flex {
+display: flex;
+justify-content: center;
+gap: 20px;
+flex-wrap: wrap;
+}
+.input-group {
+text-align: center;
+margin-bottom: 20px;
+}
+
+input {
+padding: 8px;
+margin: 5px;
+}
+
+button {
+background: #00c853;
+color: white;
+border: none;
+border-radius: 6px;
+}
+
+button:hover {
+background: #00a844;
+}
+
+.canvas-container {
+width: 350px;
+}
+
+.canvas-container canvas {
+max-width: 100%;
+height: 250px !important;
+}
+
+canvas {
+width: 100% !important;
+}
+
+#tips {
+margin-top: 10px;
+}
+
+#tips ul {
+list-style: none;
+padding: 0;
+}
+
+#tips li {
+background: #1f1f1f;
+color: white;
+padding: 12px;
+margin: 8px;
+border-radius: 8px;
+}
+
+#tips li:hover {
+transform: scale(1.02);
+transition: 0.2s;
+}

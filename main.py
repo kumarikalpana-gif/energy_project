@@ -1,5 +1,10 @@
 from fastapi import FastAPI, Depends, HTTPException
 
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from fastapi import Request
+
 from fastapi.middleware.cors import CORSMiddleware
 
 from sqlalchemy.orm import Session
@@ -20,6 +25,10 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
+templates = Jinja2Templates(directory="templates")
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -28,9 +37,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/")
-def home():
-    return {"message": "Energy System Running"}
+@app.get("/", response_class=HTMLResponse)
+def login_page(request: Request):
+    return templates.TemplateResponse("login.html", {"request": request})
 
 @app.post("/register", response_model=schemas.UserResponse)
 def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
@@ -208,3 +217,7 @@ def get_recommendations(username: str, db: Session = Depends(get_db)):
         "monthly_bill_estimate": round(monthly_bill, 2),
         "tips": tips
     }
+
+@app.get("/dashboard", response_class=HTMLResponse)
+def dashboard_page(request: Request):
+    return templates.TemplateResponse("dashboard.html", {"request": request})
