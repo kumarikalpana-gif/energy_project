@@ -3,63 +3,78 @@
 <head>
     <title>Energy Dashboard</title>
 
-        <link rel="stylesheet" href="/static/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/static/style.css">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body id="dashboard">
 
-<h1> Energy Dashboard</h1>
+<h1 class="main-title">⚡ Smart Energy Management System</h1>
 
-<div style="display:flex; justify-content:space-between; padding:15px; background:#1f1f1f;">
-    <h2>⚡ Energy Dashboard</h2>
-    <div>
-        <span id="welcomeUser"></span>
-        <button onclick="logout()">Logout</button>
+<div class="main-container">
+
+    <!-- TOP BAR -->
+    <div class="topbar">
+        <h2>Energy Dashboard</h2>
+        <div>
+            <span id="welcomeUser"></span>
+            <button onclick="logout()">Logout</button>
+        </div>
     </div>
+
+    <!-- SUMMARY -->
+    <div class="flex">
+        <div class="card">
+            <h3><i class="fas fa-bolt"></i> Daily Energy</h3>
+            <p id="dailyEnergy">0</p>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-rupee-sign"></i> Monthly Bill</h3>
+            <p id="bill">0</p>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- ADD APPLIANCE -->
+    <h2 class="section-title">Add Appliance</h2>
+
+    <div class="input-group">
+        <input id="a_name" placeholder="Name (AC, Fan)">
+        <input id="a_power" placeholder="Power (W)">
+        <input id="a_hours" placeholder="Hours/Day">
+        <button onclick="addAppliance()">Add Appliance</button>
+    </div>
+
+    <hr>
+
+    <!-- CHARTS -->
+    <div class="flex">
+        <div class="card canvas-container">
+            <h3><i class="fas fa-chart-bar"></i> Energy by Appliance</h3>
+            <canvas id="barChart"></canvas>
+        </div>
+
+        <div class="card canvas-container">
+            <h3><i class="fas fa-chart-pie"></i> Distribution</h3>
+            <canvas id="pieChart"></canvas>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- TIPS -->
+    <h2 class="section-title">Recommendations</h2>
+    <ul id="tips"></ul>
+
 </div>
 
-<!-- SUMMARY CARDS -->
-<div class="flex">
-    <div class="card">
-        <h3>Daily Energy</h3>
-        <p id="dailyEnergy">0</p>
-    </div>
-
-    <div class="card">
-        <h3>Monthly Bill</h3>
-        <p id="bill">0</p>
-    </div>
-</div>
-
-<hr>
-
-<h2>Add Appliance</h2>
-<input id="a_name" placeholder="Name (AC, Fan)">
-<input id="a_power" placeholder="Power (W)">
-<input id="a_hours" placeholder="Hours/Day">
-<button onclick="addAppliance()">Add</button>
-
-<hr>
-
-<div class="flex">
-    <div class="card canvas-container">
-        <h3>Energy by Appliance</h3>
-        <canvas id="barChart"></canvas>
-    </div>
-
-    <div class="card canvas-container">
-        <h3>Energy Distribution</h3>
-        <canvas id="pieChart"></canvas>
-    </div>
-</div>
-
-<hr>
-
-<!-- RECOMMENDATIONS -->
-<h2>Recommendations</h2>
-<p id="tips"></p>
-
-<!-- Chart.js (used for visualization) -->
+<!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script src="/static/script.js"></script>

@@ -1,4 +1,4 @@
-const BASE_URL = ""; // IMPORTANT: keep empty for Render
+const BASE_URL = ""; // keep empty for Render
 
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById(passErr).innerText = "Password required";
                 valid = false;
             } else if (password.length < 4) {
-                document.getElementById(passErr).innerText = "Password must be at least 4 characters";
+                document.getElementById(passErr).innerText = "Minimum 4 characters required";
                 valid = false;
             }
 
@@ -60,7 +60,8 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(() => {
                 alert("Registered successfully!");
                 showLogin();
-            });
+            })
+            .catch(() => alert("Registration failed"));
         };
 
         window.login = function () {
@@ -75,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 body: JSON.stringify({username, password})
             })
             .then(res => {
-                if (!res.ok) throw new Error("Invalid credentials");
+                if (!res.ok) throw new Error();
                 return res.json();
             })
             .then(data => {
@@ -100,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         document.getElementById("welcomeUser").innerText =
-            "Welcome, " + currentUser;
+            "👋 Welcome, " + currentUser;
 
         window.logout = function () {
             localStorage.removeItem("user");
@@ -109,10 +110,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         window.addAppliance = function () {
 
-            if (!document.getElementById("a_name").value ||
-                !document.getElementById("a_power").value ||
-                !document.getElementById("a_hours").value) {
+            let name = document.getElementById("a_name").value;
+            let power = document.getElementById("a_power").value;
+            let hours = document.getElementById("a_hours").value;
 
+            if (!name || !power || !hours) {
                 alert("Fill all fields");
                 return;
             }
@@ -121,19 +123,31 @@ document.addEventListener("DOMContentLoaded", function () {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({
-                    name: document.getElementById("a_name").value,
-                    power: parseFloat(document.getElementById("a_power").value),
-                    hours_per_day: parseFloat(document.getElementById("a_hours").value)
+                    name: name,
+                    power: parseFloat(power),
+                    hours_per_day: parseFloat(hours)
                 })
             })
             .then(res => res.json())
             .then(() => {
                 alert("Appliance Added!");
+
+                // Clear fields
+                document.getElementById("a_name").value = "";
+                document.getElementById("a_power").value = "";
+                document.getElementById("a_hours").value = "";
+
                 loadDashboard();
-            });
+            })
+            .catch(() => alert("Error adding appliance"));
         };
 
+        let barChart, pieChart;
+
         function loadDashboard() {
+
+            // 🔥 Loading effect
+            document.body.style.opacity = "0.6";
 
             fetch("/appliance/all/" + currentUser)
             .then(res => res.json())
@@ -155,15 +169,17 @@ document.addEventListener("DOMContentLoaded", function () {
             fetch("/recommend/" + currentUser)
             .then(res => res.json())
             .then(data => {
+
                 document.getElementById("bill").innerText =
                     "₹ " + data.monthly_bill_estimate;
 
+                // Better styled tips
                 document.getElementById("tips").innerHTML =
                     data.tips.map(t => `<li>${t}</li>`).join("");
+
+                document.body.style.opacity = "1"; // done loading
             });
         }
-
-        let barChart, pieChart;
 
         function drawBarChart(labels, data) {
             if (barChart) barChart.destroy();
@@ -172,7 +188,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 type: 'bar',
                 data: {
                     labels: labels,
-                    datasets: [{ label: 'Energy', data: data }]
+                    datasets: [{
+                        label: 'Energy (kWh)',
+                        data: data
+                    }]
                 }
             });
         }
@@ -184,7 +203,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 type: 'pie',
                 data: {
                     labels: labels,
-                    datasets: [{ data: data }]
+                    datasets: [{
+                        data: data
+                    }]
                 }
             });
         }
