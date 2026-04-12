@@ -5,7 +5,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/style.css?v=2">
 
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -72,12 +72,26 @@
     <h2 class="section-title">Recommendations</h2>
     <ul id="tips"></ul>
 
+
+  <hr>
+
+    <h2>🤖 Smart Energy Assistant</h2>
+
+    <div class="card" style="width:400px; margin:auto;">
+        
+        <div id="chatBox" style="height:200px; overflow-y:auto; text-align:left;"></div>
+
+        <input id="chatInput" placeholder="Ask something...">
+        <button onclick="sendMessage()">Send</button>
+
+    </div>
+
+
 </div>
 
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<script src="/static/script.js"></script>
-
+<script src="/static/script.js?v=2"></script>
 </body>
 </html>

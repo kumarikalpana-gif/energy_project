@@ -108,6 +108,36 @@ document.addEventListener("DOMContentLoaded", function () {
             window.location.href = "/";
         };
 
+
+        window.sendMessage = function () {
+
+            let input = document.getElementById("chatInput").value;
+
+            if (!input) return;
+
+            let chatBox = document.getElementById("chatBox");
+
+            chatBox.innerHTML += `<p><b>You:</b> ${input}</p>`;
+
+            fetch("/chatbot", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({message: input})
+            })
+            .then(res => res.json())
+            .then(data => {
+
+                chatBox.innerHTML += `
+                    <p>🌦 Weather: ${data.weather}</p>
+                    <p>🤖 AI: ${data.reply}</p>
+                `;
+
+                chatBox.scrollTop = chatBox.scrollHeight;
+            });
+
+            document.getElementById("chatInput").value = "";
+        };
+
         window.addAppliance = function () {
 
             let name = document.getElementById("a_name").value;

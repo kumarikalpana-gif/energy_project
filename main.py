@@ -1,5 +1,7 @@
 from fastapi import FastAPI, Depends, HTTPException
 
+
+
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -11,6 +13,8 @@ from sqlalchemy.orm import Session
 
 import models, schemas
 from database import engine, SessionLocal
+
+import random
 
 
 def get_db():
@@ -29,6 +33,7 @@ templates = Jinja2Templates(directory="templates")
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -36,6 +41,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+def get_fake_weather():
+    weather_conditions = ["Hot", "Cold", "Moderate", "Humid", "Rainy"]
+    return random.choice(weather_conditions)
 
 @app.get("/", response_class=HTMLResponse)
 def login_page(request: Request):
@@ -221,3 +230,45 @@ def get_recommendations(username: str, db: Session = Depends(get_db)):
 @app.get("/dashboard", response_class=HTMLResponse)
 def dashboard_page(request: Request):
     return templates.TemplateResponse("dashboard.html", {"request": request})
+
+
+@app.post("/chatbot")
+def chatbot(message: dict):
+
+    user_msg = message["message"].lower()
+
+    weather = get_fake_weather()
+
+    # 🔥 RULE-BASED RESPONSE
+    if "ac" in user_msg or "cool" in user_msg:
+        advice = "Use AC at 24°C and clean filters for efficiency."
+
+    elif "bill" in user_msg or "save" in user_msg:
+        advice = "Turn off unused appliances and switch to LED bulbs."
+
+    elif "fan" in user_msg:
+        advice = "Use fan instead of AC when possible to save energy."
+
+    elif "fridge" in user_msg:
+        advice = "Avoid opening fridge frequently and keep it away from heat."
+
+    else:
+        advice = "Use appliances efficiently to reduce electricity usage."
+
+    # 🔥 WEATHER BASED INTELLIGENCE
+    if weather == "Hot":
+        advice += " It is hot today, so reduce AC usage time and maintain 24°C."
+
+    elif weather == "Cold":
+        advice += " It is cold today, avoid unnecessary heaters."
+
+    elif weather == "Rainy":
+        advice += " It is rainy, ensure proper insulation and avoid moisture damage."
+
+    elif weather == "Humid":
+        advice += " It is humid, use ventilation instead of AC when possible."
+
+    return {
+        "weather": weather,
+        "reply": advice
+    }

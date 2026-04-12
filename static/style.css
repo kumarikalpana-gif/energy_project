@@ -194,6 +194,17 @@ body#dashboard input {
     transform: scale(1.02);
 }
 
+#chatBox {
+    background: rgba(0,0,0,0.4);
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+#chatBox p {
+    margin: 5px 0;
+}
+
 /* ANIMATION */
 @keyframes fadeIn {
     from {
@@ -205,3 +216,4 @@ body#dashboard input {
         transform: translateY(0);
     }
 }
+
